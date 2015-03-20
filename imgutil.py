@@ -20,20 +20,6 @@ def save(image, path, name):
 		print str(sys.exc_info()[0])
 		raise
 
-
-#Optional: opacity=255 - specify opacity or set to -1 for random
-def randomColor(min=0,max=255,opacity=255):
-	r = random.randint(min,max)
-	g = random.randint(min,max)
-	b = random.randint(min,max)
-
-	if(opacity>=0 and opacity<=255):
-		a = opacity
-	else:
-		a = random.randint(min,max)
-
-	return (r,g,b,a)
-
 def main():
 	print "Not really any reason to run this, but thanks for playing!"
 

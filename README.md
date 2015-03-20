@@ -2,13 +2,13 @@
 Programatic image generation in python. Sandbox project, no objective or application.
 
 ##imgutil.py
-###save(image, path, dir)
+###save(image, path, file)
 Usage Example:
 ```
 from PIL import Image
 
 im = Image.open("test.jpg")
-imgutil.save(out,"temp/","test.png")
+imgutil.save(out,"temp/","testcopy.jpg")
 ```
 
 

@@ -208,26 +208,11 @@ def main():
     # for c in randomPallette4:
     #     print c.__unicode__()
 
-    pLetThemGo = [
-    Color(41,33,82),
-    Color(20,86,99),
-    Color(220,42,94),
-    Color(249,146,79),
-    Color(245,243,202)
-    ]
 
-    pUlquiorra = [
-    Color(238,241,232),
-    Color(167,193,170),
-    Color(78,131,85),
-    Color(57,88,82),
-    Color(34,51,59)
-    ]
-
-    im = makeSquareGridPallette(10,10,100, pallette=pLetThemGo, variance=15)
+    im = makeSquareGridPallette(8,5,320, pallette=pLetThemGo, variance=15)
 
 
-    filename = str(time.strftime("%Y%m%d%H%M%S")) + "letthemgo.png"
+    filename = str(time.strftime("%Y%m%d%H%M%S")) + "letthemgo_variance15.png"
     imgutil.save(im, "created/grid/pallette/", filename)
 
     pass

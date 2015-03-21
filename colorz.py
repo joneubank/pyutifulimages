@@ -13,8 +13,22 @@ class Color:
     def rgb(self):
         return (self.r, self.g, self.b)
 
+    def rgbrange(self,variance):
+        output = (
+            clamp(self.r-variance),
+            clamp(self.r+variance),
+            clamp(self.g-variance),
+            clamp(self.g+variance),
+            clamp(self.b-variance),
+            clamp(self.b+variance),
+            )
+        return output
+
     def rgba(self):
         return (self.r, self.g, self.b, self.a)
+
+    def __unicode__(self):
+        return self.rgba()
 
 
 def fromNum(num):
@@ -30,14 +44,10 @@ def fromNum(num):
     return Color(r, g, b)
 
 
-# Optional:
-# min=0 - Specify minimum generated value - applies to R, G, B, and A values
-# max=255 - Specify maximum generated value - applies to R, G, B, and A values
-# opacity=255 - specify opacity or set to -1 for random
-def randcolor(min=0, max=255, opacity=255):
-    r = random.randint(min, max)
-    g = random.randint(min, max)
-    b = random.randint(min, max)
+def randcolorrange(colorrange=(0, 255, 0, 255, 0, 255), opacity=255):
+    r = clamp(random.randint(int(colorrange[0]), int(colorrange[1])))
+    g = clamp(random.randint(int(colorrange[2]), int(colorrange[3])))
+    b = clamp(random.randint(int(colorrange[4]), int(colorrange[5])))
 
     if(opacity >= 0 and opacity <= 255):
         a = opacity
@@ -45,6 +55,14 @@ def randcolor(min=0, max=255, opacity=255):
         a = random.randint(min, max)
 
     return Color(r, g, b, a)
+
+
+# Optional:
+# min=0 - Specify minimum generated value - applies to R, G, B, and A values
+# max=255 - Specify maximum generated value - applies to R, G, B, and A values
+# opacity=255 - specify opacity or set to -1 for random
+def randcolor(min=0, max=255, opacity=255):
+    return randcolorrange((min, max, min, max, min, max), opacity)
 
 
 # Returns input limited to rang 0-255
@@ -58,17 +76,18 @@ def clamp(n):
         return n
 
 std = {
-    'BLACK'		:Color(  0,   0,   0),
-    'WHITE'		:Color(255, 255, 255),
-    'RED'		:Color(255,   0,   0),
-    'GREEN'		:Color(  0, 255,   0),
-    'BLUE'		:Color(  0,   0, 255)
+    'BLACK': Color(0, 0, 0),
+    'WHITE': Color(255, 255, 255),
+    'RED': Color(255, 0, 0),
+    'GREEN': Color(0, 255, 0),
+    'BLUE': Color(0, 0, 255)
     }
 
 
 def main():
     # print colorFromNum(300000).rgb()
     pass
+
 
 if __name__ == '__main__':
     main()

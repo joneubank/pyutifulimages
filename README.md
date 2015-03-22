@@ -27,7 +27,11 @@ Returns a Color object with random RGB values in the range min-max. Opacity can 
 Returns a Color object with RGB values based on the value of the number passed in.
 
 
+##boxdraw.py
+Simple image generation focused on making grids of random colours. Variants on the same concept are included for limiting the colors generated to ranges of colours or to specific colour pallettes. Some simple algorithms for colour range gradients are also included.
+
 
 ##Requirements
 The following python packages are dependencies for this package to run:
 * [pillow](https://pypi.python.org/pypi/Pillow/2.0.0) - Maintained fork of PIL (Python Image Library)
+* [BeautifulSoup4](http://www.crummy.com/software/BeautifulSoup/) - HTML Parsing and DOM navigation library

@@ -2,6 +2,7 @@ import random
 import imgutil
 import colorz
 from colorz import Color
+import pallettes
 
 import time
 import math
@@ -9,10 +10,11 @@ import math
 from PIL import Image
 # from PIL import ImageColor
 from PIL import ImageDraw
+from PIL import ImageFilter
 
 
 def makeBlank(width, height, color=colorz.std['BLACK']):
-    return Image.new("RGBA", (width, height), color.rgb())
+    return Image.new("RGBA", (width, height), color.rgba())
 
 
 # tilesWide is number of tiles horizontaly
@@ -195,26 +197,57 @@ def makeSquareGridPallette(
     return im
 
 
+def addGridShadows(
+    image,
+    tilesWide, tilesHigh, tileSize,
+    color=colorz.std['BLACK'], thickness=5, blurIters=0
+):
+    overlay = makeBlank(tilesWide*tileSize, tilesHigh*tileSize, color=Color(255, 255, 255,a=0))
+    draw = ImageDraw.Draw(overlay, image.mode)
+    for x in range(0, tilesWide):
+        for y in range(0, tilesHigh):
+            if(x != 0):
+                width = thickness*random.choice([1, -1])
+                vertrect = [x*tileSize, y*tileSize, x*tileSize+width, (y+1)*tileSize]
+                draw.rectangle(vertrect, fill=color.rgba())
+
+            if(y != 0):
+                width = thickness*random.choice([1, -1])
+                horzrect = [x*tileSize, y*tileSize, (x+1)*tileSize, y*tileSize+width]
+                draw.rectangle(horzrect, fill=color.rgba())
+    
+    for i in range(blurIters):
+        overlay = overlay.filter(ImageFilter.BLUR)
+
+    image.paste(overlay, (0,0), overlay)
+    return image
+
+
+def drawGradient():
+    pass
+
 def main():
 
-    randomPallette = [Color(random.randint(0,255),random.randint(0,255),random.randint(0,255))]
-    randomPallette4 = [
-    Color(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
-    Color(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
-    Color(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
-    Color(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
-    ]
+    # randomPallette = [Color(random.randint(0,255),random.randint(0,255),random.randint(0,255))]
+    # randomPallette4 = [
+    # Color(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
+    # Color(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
+    # Color(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
+    # Color(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
+    # ]
 
     # for c in randomPallette4:
     #     print c.__unicode__()
 
 
-    im = makeSquareGridPallette(8,5,320, pallette=pLetThemGo, variance=15)
+    # im = makeSquareGridPallette(8,5,320, pallette=pallettes.getFromColourLovers(1283145), variance=15)
 
-
-    filename = str(time.strftime("%Y%m%d%H%M%S")) + "letthemgo_variance15.png"
-    imgutil.save(im, "created/grid/pallette/", filename)
-
+    colorrange = (100, 255, 0, 100, 0, 200)
+    im = makeSquareGrid(10, 10, 100, colorrange=colorrange)
+    im = addGridShadows(im, 10, 10, 100,color=Color(0,0,0,100),thickness=6)
+    filename = str(time.strftime("%Y%m%d%H%M%S")) + str(colorrange) + ".png"
+    imgutil.save(im, "created/grid/dropshadows/", filename)
+    im.show()
     pass
 
 if __name__ == '__main__':

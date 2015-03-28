@@ -27,6 +27,9 @@ class Color:
     def rgba(self):
         return (self.r, self.g, self.b, self.a)
 
+    def invert(self):
+        return Color(255-self.r, 255-self.g, 255-self.b, self.a)
+
     def __unicode__(self):
         return self.rgba()
 

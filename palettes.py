@@ -88,7 +88,7 @@ def getFromColourLovers(num):
     return palette
 
 
-def paletteImage(palette, width, height):
+def image(palette, width, height):
     import imgutil
 
     from PIL import Image
@@ -97,8 +97,27 @@ def paletteImage(palette, width, height):
     im = imgutil.makeBlank(width, height)
     draw = ImageDraw.Draw(im, "RGBA")
 
+    num = len(palette)
+    bandwidth = width/num
+
+    index = 0
+
+    for color in palette:
+        r = [index*bandwidth, 0, (index+1)*bandwidth, height]
+        draw.rectangle(r, fill=color.rgba())
+        index += 1
+    return im
+
 def main():
-    print randpalette(7)
+    import time
+    import imgutil
+    import random
+
+    # print randpalette(7)
+    colorloverid = 3669730
+    filename = imgutil.genTimeName("cl"+str(colorloverid),"png", timestamp=False)
+    im = image(getFromColourLovers(colorloverid),960, 640)
+    imgutil.save(im, "created/palette/", filename)
 
 if __name__ == '__main__':
     main()

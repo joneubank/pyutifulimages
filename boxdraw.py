@@ -2,7 +2,7 @@ import random
 import imgutil
 import colorz
 from colorz import Color
-import pallettes
+import palettes
 
 import time
 import math
@@ -10,11 +10,6 @@ import math
 from PIL import Image
 # from PIL import ImageColor
 from PIL import ImageDraw
-from PIL import ImageFilter
-
-
-def makeBlank(width, height, color=colorz.std['BLACK']):
-    return Image.new("RGBA", (width, height), color.rgba())
 
 
 # tilesWide is number of tiles horizontaly
@@ -26,7 +21,7 @@ def makeSquareGrid(
     width = tilesWide*tileSize
     height = tilesHigh*tileSize
 
-    im = makeBlank(width, height)
+    im = imgutil.makeBlank(width, height)
     draw = ImageDraw.Draw(im, "RGBA")
 
     for x in range(0, tilesWide):
@@ -53,7 +48,7 @@ def makeSquareGridGradientSides(
     width = tilesWide*tileSize
     height = tilesHigh*tileSize
 
-    im = makeBlank(width, height)
+    im = imgutil.makeBlank(width, height)
     draw = ImageDraw.Draw(im, "RGBA")
 
     xDelta = (
@@ -105,7 +100,7 @@ def makeSquareGridGradientCorners(
     width = tilesWide*tileSize
     height = tilesHigh*tileSize
 
-    im = makeBlank(width, height)
+    im = imgutil.makeBlank(width, height)
     draw = ImageDraw.Draw(im, "RGBA")
 
     for x in range(0, tilesWide):
@@ -175,21 +170,21 @@ def makeSquareGridGradientCorners(
     # im = makeSquareGridGradientCorners(100,100, 10, topLeft=Color(41,33,82).rgbrange(20), bottomRight=Color(30,86,99).rgbrange(20), topRight=Color(220,42,94).rgbrange(20), bottomLeft=Color(246,146,79).rgbrange(20))
 
 
-def makeSquareGridPallette(
+def makeSquareGridpalette(
     tilesWide, tilesHigh, tileSize,
-    pallette=[Color(0,0,0)], variance=255
+    palette=[Color(0,0,0)], variance=255
 ):
     width = tilesWide*tileSize
     height = tilesHigh*tileSize
 
-    im = makeBlank(width, height)
+    im = imgutil.makeBlank(width, height)
     draw = ImageDraw.Draw(im, "RGBA")
 
     for x in range(0, tilesWide):
         for y in range(0, tilesHigh):
 
-            useColor = random.randint(0,len(pallette)-1)
-            useRange = pallette[useColor].rgbrange(variance)
+            useColor = random.randint(0,len(palette)-1)
+            useRange = palette[useColor].rgbrange(variance)
 
             r = [x*tileSize, y*tileSize, (x+1)*tileSize, (y+1)*tileSize]
             draw.rectangle(r, fill=colorz.randcolorrange(colorrange=useRange).rgba())
@@ -200,10 +195,11 @@ def makeSquareGridPallette(
 def addGridShadows(
     image,
     tilesWide, tilesHigh, tileSize,
-    color=colorz.std['BLACK'], thickness=5, blurIters=0
+    color=colorz.std['BLACK'], thickness=5
 ):
-    overlay = makeBlank(tilesWide*tileSize, tilesHigh*tileSize, color=Color(255, 255, 255,a=0))
-    draw = ImageDraw.Draw(overlay, image.mode)
+    overlay = imgutil.makeBlank(tilesWide*tileSize, tilesHigh*tileSize, color=Color(255, 255, 255,a=0))
+    # draw = ImageDraw.Draw(overlay, image.mode)
+    draw = ImageDraw.Draw(image, image.mode)
     for x in range(0, tilesWide):
         for y in range(0, tilesHigh):
             if(x != 0):
@@ -215,11 +211,8 @@ def addGridShadows(
                 width = thickness*random.choice([1, -1])
                 horzrect = [x*tileSize, y*tileSize, (x+1)*tileSize, y*tileSize+width]
                 draw.rectangle(horzrect, fill=color.rgba())
-    
-    for i in range(blurIters):
-        overlay = overlay.filter(ImageFilter.BLUR)
 
-    image.paste(overlay, (0,0), overlay)
+    # image.paste(overlay, (0,0), overlay)
     return image
 
 
@@ -228,26 +221,28 @@ def drawGradient():
 
 def main():
 
-    # randomPallette = [Color(random.randint(0,255),random.randint(0,255),random.randint(0,255))]
-    # randomPallette4 = [
+    # randompalette = [Color(random.randint(0,255),random.randint(0,255),random.randint(0,255))]
+    # randompalette4 = [
     # Color(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
     # Color(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
     # Color(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
     # Color(random.randint(0,255),random.randint(0,255),random.randint(0,255)),
     # ]
 
-    # for c in randomPallette4:
+    # for c in randompalette4:
     #     print c.__unicode__()
 
+    # paletteid=random.randint(0,3800000)
+    paletteid=1930
+    palette = palettes.getFromColourLovers(paletteid)
+    im = makeSquareGridpalette(10,10,100, palette=palette, variance=0)
 
-    # im = makeSquareGridPallette(8,5,320, pallette=pallettes.getFromColourLovers(1283145), variance=15)
-
-    colorrange = (100, 255, 0, 100, 0, 200)
-    im = makeSquareGrid(10, 10, 100, colorrange=colorrange)
-    im = addGridShadows(im, 10, 10, 100,color=Color(0,0,0,100),thickness=6)
-    filename = str(time.strftime("%Y%m%d%H%M%S")) + str(colorrange) + ".png"
-    imgutil.save(im, "created/grid/dropshadows/", filename)
-    im.show()
+    # colorrange = (100, 255, 0, 100, 0, 200)
+    # im = makeSquareGrid(10, 10, 100, colorrange=colorrange)
+    # im = addGridShadows(im, 8, 6, 320,color=Color(0,0,0),thickness=15)
+    filename = str(time.strftime("%Y%m%d%H%M%S")) + "_" + str(paletteid) + ".png"
+    imgutil.save(im, "created/grid/palette/", filename)
+    # im.show()
     pass
 
 if __name__ == '__main__':

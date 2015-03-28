@@ -28,7 +28,7 @@ Returns a Color object with RGB values based on the value of the number passed i
 
 
 ##boxdraw.py
-Simple image generation focused on making grids of random colours. Variants on the same concept are included for limiting the colors generated to ranges of colours or to specific colour pallettes. Some simple algorithms for colour range gradients are also included.
+Simple image generation focused on making grids of random colours. Variants on the same concept are included for limiting the colors generated to ranges of colours or to specific colour palettes. Some simple algorithms for colour range gradients are also included.
 
 
 ##Requirements

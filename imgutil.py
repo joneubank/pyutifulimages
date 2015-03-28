@@ -28,6 +28,13 @@ def save(image, path, name):
         raise
 
 
+def genTimeName(description, filetype, timestamp=True):
+    output = ""
+    if timestamp:
+        output = output + str(time.strftime("%Y%m%d%H%M%S")) + "_"
+    output = output + description + "." + filetype
+    return output
+
 def main():
     print "Not really any reason to run this, but thanks for playing!"
 

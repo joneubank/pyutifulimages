@@ -1,7 +1,13 @@
 import os
 import sys
 # import random
-# from PIL import Image
+from PIL import Image
+
+import colorz
+
+
+def makeBlank(width, height, color=colorz.std['BLACK'], mode="RGBA"):
+    return Image.new(mode, (width, height), color.rgba())
 
 
 # Save a PIL Image at the given path. Ensure that the filetype is specified.
